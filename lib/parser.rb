@@ -1,3 +1,5 @@
+require 'charlock_holmes'
+
 module WebVTT
 
   def self.read(file)
@@ -10,6 +12,12 @@ module WebVTT
     end
 
     srt = ::File.read(srt_file)
+    detection = CharlockHolmes::EncodingDetector.detect(srt)
+
+    if detection[:encoding] != 'UTF-8'
+      srt = CharlockHolmes::Converter.convert srt, detection[:encoding], 'UTF-8'
+    end
+
     output ||= srt_file.gsub(".srt", ".vtt")
 
     # convert timestamps and save the file
@@ -34,7 +42,15 @@ module WebVTT
 
       @path = webvtt_file
       @filename = ::File.basename(@path)
-      @content = ::File.read(webvtt_file).gsub("\r\n", "\n") # normalizing new line character
+      @content = ::File.read(webvtt_file)
+      detection = CharlockHolmes::EncodingDetector.detect(@content)
+
+      if detection[:encoding] != 'UTF-8'
+        @content = CharlockHolmes::Converter.convert @content, detection[:encoding], 'UTF-8'
+      end
+
+      @content = @content.gsub("\r\n", "\n") # normalizing new line character
+
       parse
     end
 
