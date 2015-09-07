@@ -2,19 +2,19 @@ PATH
   remote: .
   specs:
     webvtt-ruby (0.3.0)
-      charlock_holmes
+      charlock_holmes_bundle_icu
 
 GEM
   remote: https://rubygems.org/
   specs:
-    charlock_holmes (0.7.3)
+    charlock_holmes_bundle_icu (0.6.9.2)
     minitest (5.7.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  charlock_holmes
+  charlock_holmes_bundle_icu
   minitest
   webvtt-ruby!
 
